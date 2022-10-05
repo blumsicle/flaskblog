@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smoothblog"
+version = "0.0.1"
+description = "A Flask based app that allows users to create blogs."
+readme = "README.md"
+dependencies = [
+    "Flask",
+    "Flask-SQLAlchemy",
+    "Flask-WTF[email]",
+    "Flask-Login",
+    "python-dotenv",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "coverage",
+    "pytest-cov",
+    "pylint",
+    "pylint-flask",
+    "pylint-flask-sqlalchemy",
+]
+
+[tool.setuptools]
+packages = [ "smoothblog" ]
+
+[tool.pylint."MAIN"]
+load-plugins = [
+    "pylint_flask",
+    "pylint_flask_sqlalchemy",
+]
+
+[tool.pylint."TYPECHECK"]
+ignored-classes = [ "scoped_session" ]
+
+[tool.pylint."DESIGN"]
+exclude-too-few-public-methods = [ ".*\\.Model" ]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+branch = true
+source = [ "smoothblog" ]

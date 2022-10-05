@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+<article class="card mb-4">
+    <header class="card-header">
+        <h3>Welcome to Smoothblog!</h3>
+    </header>
+
+    <div class="card-body">
+        <p>Below are all the blogs written so far!</p>
+        {% if not current_user.is_authenticated %}
+        <p>
+            If you don't have an account, <a href="{{ url_for('auth.register') }}">register here</a>.
+            Otherwise, <a href="{{ url_for('auth.login') }}">login</a> to begin creating new blogs.
+        </p>
+        {% endif %}
+    </div>
+</article>
+
+{% for blog in blogs %}
+    <article class="card mb-4">
+        <header class="card-header">
+            <h3>{{ blog.title }}</h3>
+        </header>
+
+        <div class="card-body">
+            <p style="white-space: pre-wrap">{{ blog.content }}</p>
+
+            <div class="row">
+                <div class="col">
+                    {% if current_user.is_admin or current_user.id == blog.user_id %}
+                        <a href="{{ url_for('blog.delete', blog_id=blog.id) }}" class="btn btn-sm btn-dark">Delete</a>
+                    {% endif %}
+                </div>
+                <div class="col-auto ms-auto">
+                    <small class="text-muted">
+                        <a href="mailto:{{ blog.user.email }}">{{ blog.user.username }}</a> - {{ blog.date.strftime("%b %d %Y") }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </article>
+{% endfor %}
+
+{% endblock %}
