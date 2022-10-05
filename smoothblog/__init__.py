@@ -3,12 +3,15 @@
 import os
 from logging.config import dictConfig
 
+from dotenv import load_dotenv
 from flask import Flask
 
 from . import auth, blog
 from .cli import init_db_command
 from .database import db
 from .login_manager import lm
+
+load_dotenv()
 
 
 def create_app(test_config=None):
